@@ -257,6 +257,83 @@
             </div>
         </div>
         
+        <!-- New Group Modal -->
+        <div id="newGroupModal" class="modal" style="display: none;">
+            <div class="modal-content new-group-modal">
+                <div class="modal-header">
+                    <h3>New Group</h3>
+                    <button id="closeNewGroupModal" class="modal-close-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="group-form">
+                        <div class="form-group">
+                            <label for="groupNameInput">Group Name <span class="required">*</span></label>
+                            <input type="text" id="groupNameInput" placeholder="Enter group name" required>
+                        </div>
+                        
+                        <div class="user-selection-container">
+                            <div class="user-section">
+                                <h4>Available Users</h4>
+                                <div class="search-container">
+                                    <input type="text" id="availableUsersSearch" placeholder="Search..." class="search-input">
+                                    <div class="transfer-controls">
+                                        <button id="moveAllRight" class="transfer-btn" title="Move all to selected">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M13 17l5-5-5-5M6 17l5-5-5-5"/>
+                                            </svg>
+                                        </button>
+                                        <button id="moveRight" class="transfer-btn" title="Move selected to selected">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M9 18l6-6-6-6"/>
+                                            </svg>
+                                        </button>
+                                        <button id="moveLeft" class="transfer-btn" title="Move selected to available">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M15 18l-6-6 6-6"/>
+                                            </svg>
+                                        </button>
+                                        <button id="moveAllLeft" class="transfer-btn" title="Move all to available">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M11 17l-5-5 5-5M18 17l-5-5 5-5"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="availableUsersList" class="user-list">
+                                    <div class="loading-spinner">
+                                        <div class="spinner"></div>
+                                        <p>Loading users...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="user-section">
+                                <h4>Selected Users</h4>
+                                <div class="search-container">
+                                    <input type="text" id="selectedUsersSearch" placeholder="Search..." class="search-input">
+                                </div>
+                                <div id="selectedUsersList" class="user-list">
+                                    <div class="empty-state">
+                                        <p>No users selected</p>
+                                        <small>Select users from the available list</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-actions">
+                            <button id="createGroupBtn" class="btn btn-primary" disabled>Create</button>
+                            <button id="cancelGroupBtn" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Notification Panel -->
         <div id="notificationPanel" class="notification-panel">
             <div class="notification-panel-header">
