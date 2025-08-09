@@ -264,6 +264,13 @@
                     <h3>New Group</h3>
                     <button id="closeNewGroupModal" class="modal-close-btn">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <!-- New Group Modal -->
+        <div id="newGroupModal" class="modal" style="display: none;">
+            <div class="modal-content new-group-modal">
+                <div class="modal-header">
+                    <h3>New Group</h3>
+                    <button id="closeNewGroupModal" class="modal-close-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M18 6L6 18M6 6l12 12"/>
                         </svg>
                     </button>
@@ -280,7 +287,16 @@
                                 <h4>Available Users</h4>
                                 <div class="search-container">
                                     <input type="text" id="availableUsersSearch" placeholder="Search..." class="search-input">
-                                    <div class="transfer-controls">
+
+                                </div>
+                                <div id="availableUsersList" class="user-list">
+                                    <div class="loading-spinner">
+                                        <div class="spinner"></div>
+                                        <p>Loading users...</p>
+                                    </div>
+                                </div>
+                            </div>
+                               <div class="transfer-controls">
                                         <button id="moveAllRight" class="transfer-btn" title="Move all to selected">
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <path d="M13 17l5-5-5-5M6 17l5-5-5-5"/>
@@ -302,15 +318,6 @@
                                             </svg>
                                         </button>
                                     </div>
-                                </div>
-                                <div id="availableUsersList" class="user-list">
-                                    <div class="loading-spinner">
-                                        <div class="spinner"></div>
-                                        <p>Loading users...</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
                             <div class="user-section">
                                 <h4>Selected Users</h4>
                                 <div class="search-container">
