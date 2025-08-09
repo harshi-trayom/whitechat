@@ -1,354 +1,1441 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMS Chat</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="dark-mode">
-    <div class="app-container">
-        <!-- Login Modal -->
-        <div id="loginModal" class="modal">
-            <div class="modal-content">
-                <div class="login-header">
-                    <div class="login-logo">
-                        <div class="logo-icon">💬</div>
-                        <h2>OMS Chat</h2>
-                    </div>
-                    <p class="login-subtitle">Connect to start chatting</p>
-                </div>
-                <div class="form-group">
-                    <label for="usernameInput">Username</label>
-                    <input type="text" id="usernameInput" placeholder="Enter your username" required>
-                </div>
-                <button id="loginBtn" class="btn btn-primary">Connect</button>
-                <div id="loginError" class="error-message"></div>
-            </div>
-        </div>
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        <!-- Main Chat Interface -->
-        <div class="chat-container">
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <div class="sidebar-header">
-                    <div class="app-title">
-                        <h3>OMS Chat</h3>
-                        <div class="header-icons">
-                            <button id="refreshBtn" class="icon-btn" title="Refresh">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-                                    <path d="M21 3v5h-5"/>
-                                    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
-                                    <path d="M3 21v-5h5"/>
-                                </svg>
-                            </button>
-                            <button id="notificationIcon" class="icon-btn notification-icon" title="Notifications">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                                </svg>
-                                <!-- <span class="notification-badge">3</span> -->
-                            </button>
-                            <button id="darkModeToggle" class="icon-btn" title="Toggle Theme">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="5"/>
-                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                                </svg>
-                            </button>
-                            <div class="settings-container">
-                                <button id="settingsBtn" class="icon-btn" title="Settings">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="3"/>
-                                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                                    </svg>
-                                </button>
-                                <div id="settingsDropdown" class="settings-dropdown">
-                                    <button id="newGroupBtn" class="dropdown-item">
-                                        <span class="dropdown-icon">👥</span>
-                                        New Group
-                                    </button>
-                                    <button id="activeSessionsBtn" class="dropdown-item">
-                                        <span class="dropdown-icon">📱</span>
-                                        Active Sessions
-                                    </button>
-                                    <button id="logoutBtn" class="dropdown-item">
-                                        <span class="dropdown-icon">🚪</span>
-                                        Logout
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="user-info">
-                    <div class="chat-item-avatar">
-                        <span id="userAvatar"></span>
-                        <div class="chat-status-dot" id="userStatusDot"></div>
-                    </div>
-                    <div class="user-details">
-                        <div class="user-name" id="currentUserName"></div>
-                        <div class="user-contact" id="currentUserContact"></div>
-                        <div class="connection-status" id="connectionStatus">
-                            <span class="status-label">Status:</span>
-                            <div class="status-indicator">
-                                <span class="status-dot"></span>
-                                <span class="status-text">Connecting...</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    transition: all 0.3s ease;
+}
 
-                <!-- Search -->
-                <div class="search-container">
-                    <div class="search-input-container">
-                        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"/>
-                            <path d="m21 21-4.35-4.35"/>
-                        </svg>
-                        <input type="text" id="searchInput" placeholder="Search conversations..." class="search-input">
-                        <button id="clearSearchBtn" class="clear-search-btn">×</button>
-                    </div>
-                </div>
+body.dark-mode {
+    background: #1a1a1a;
+    color: #e0e0e0;
+}
 
-                <!-- Filter Tabs -->
-                <div class="filter-tabs">
-                    <button class="filter-tab active" data-filter="all">
-                        <span class="tab-text">All</span>
-                        <span class="tab-count" id="allCount">(0)</span>
-                    </button>
-                    <button class="filter-tab" data-filter="unread">
-                        <span class="tab-text">Unread</span>
-                        <span class="tab-count" id="unreadCount">(0)</span>
-                    </button>
-                    <button class="filter-tab" data-filter="groups">
-                        <span class="tab-text">Groups</span>
-                        <span class="tab-count" id="groupsCount">(0)</span>
-                    </button>
-                    <button class="filter-tab" data-filter="online">
-                        <span class="tab-text">Online</span>
-                        <span class="tab-count" id="onlineCount">(0)</span>
-                    </button>
-                </div>
+/* App Container */
+.app-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
-                <div class="chat-list" id="chatList">
-                    <!-- Chat items will be populated here -->
-                </div>
-            </div>
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
 
-            <!-- Main Chat Area -->
-            <div class="main-chat">
-                <div class="chat-header" id="chatHeader">
-                    <div class="chat-info">
-                        <div class="chat-avatar">
-                            <span id="chatAvatar"></span>
-                            <div class="chat-status-dot" id="chatStatusDot"></div>
-                        </div>
-                        <div class="chat-details">
-                            <h3 id="chatTitle">Select a chat</h3>
-                            <span id="chatStatus" class="chat-status-text">Choose a conversation to start messaging</span>
-                        </div>
-                    </div>
-                </div>
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    animation: modalSlideIn 0.3s ease;
+}
 
-                <div class="messages-container" id="messagesContainer"><div class="welcome-container" id="welcomeContainer">
-                    <div class="welcome-screen" id="welcomeScreen">
-                        <div class="welcome-icon">💬</div>
-                        <h3>Welcome to OMS Chat</h3>
-                        <p>Hi <span id="welcomeUsername"></span>! Select a conversation to start chatting</p>
-                        <div class="connection-info">
-                            <div class="connection-indicator">
-                                <span class="connection-dot"></span>
-                                <span>Connected</span>
-                            </div>
-                            <div class="chat-count">
-                                <span class="chat-count-icon">👥</span>
-                                <span id="totalChatsCount">0 conversations</span>
-                            </div>
-                        </div></div>
-                    </div>
-                    
-                    <!-- Post-login welcome page -->
-                    <div class="post-login-welcome" id="postLoginWelcome" style="display: none;">
-                        <div class="welcome-animation">
-                            <div class="welcome-logo">💬</div>
-                            <div class="welcome-pulse"></div>
-                        </div>
-                        <h2>Welcome to OMS Chat!</h2>
-                        <p>Hi <span id="postLoginUsername"></span>! You're now connected and ready to chat.</p>
-                        <div class="welcome-stats">
-                            <div class="stat-item">
-                                <div class="stat-icon">👥</div>
-                                <div class="stat-text">
-                                    <span class="stat-number" id="welcomeTotalChats">0</span>
-                                    <span class="stat-label">Conversations</span>
-                                </div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-icon">📱</div>
-                                <div class="stat-text">
-                                    <span class="stat-number" id="welcomeOnlineChats">0</span>
-                                    <span class="stat-label">Online</span>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="welcome-continue-btn" id="welcomeContinueBtn">Start Chatting</button>
-                    </div>
-                </div>
+.dark-mode .modal-content {
+    background: #2d2d2d;
+    color: #e0e0e0;
+}
 
-                <div class="message-input-container" style="display: none;">
-                    <div class="input-wrapper">
-                        <input type="file" id="fileInput" multiple style="display: none;" accept="*/*">
-                        <button id="attachBtn" class="attach-btn" title="Attach files" disabled>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.64 16.2a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
-                            </svg>
-                        </button>
-                        <!-- <input type="text" id="messageInput" placeholder="Type a message..." disabled> -->
-                        <textarea id="messageInput" class="messageInput" placeholder="Type a message..." rows="1"></textarea>
-                        <button id="sendBtn" class="send-btn" disabled>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 2L11 13"/>
-                                <path d="M22 2l-7 20-4-9-9-4 20-7z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- File List -->
-                <div id="fileList" class="file-list" style="display: none;"></div>
-            </div>
-        </div>
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-        <!-- Toast Container -->
-        <div id="toastContainer" class="toast-container"></div>
-        
-        <!-- Notification Toast -->
-        <div id="notificationToast" class="notification-toast">
-            <div class="notification-content">
-                <span class="notification-icon">✅</span>
-                <div class="notification-text">
-                    <div class="notification-title">Chats Refreshed</div>
-                    <div class="notification-message">Chat list has been updated</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Active Sessions Modal -->
-        <div id="activeSessionsModal" class="modal" style="display: none;">
-            <div class="modal-content sessions-modal">
-                <div class="modal-header">
-                    <h3>Active Sessions</h3>
-                    <button id="closeSessionsModal" class="modal-close-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 6L6 18M6 6l12 12"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div id="sessionsContent" class="sessions-content">
-                        <div class="loading-spinner">
-                            <div class="spinner"></div>
-                            <p>Loading sessions...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- New Group Modal -->
-        <div id="newGroupModal" class="modal" style="display: none;">
-            <div class="modal-content new-group-modal">
-                <div class="modal-header">
-                    <h3>New Group</h3>
-                    <button id="closeNewGroupModal" class="modal-close-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 6L6 18M6 6l12 12"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="group-form">
-                        <div class="form-group">
-                            <label for="groupNameInput">Group Name <span class="required">*</span></label>
-                            <input type="text" id="groupNameInput" placeholder="Enter group name" required>
-                        </div>
-                        
-                        <div class="user-selection-container">
-                            <div class="user-section">
-                                <h4>Available Users</h4>
-                                <div class="search-container">
-                                    <input type="text" id="availableUsersSearch" placeholder="Search..." class="search-input">
-                                    <div class="transfer-controls">
-                                        <button id="moveAllRight" class="transfer-btn" title="Move all to selected">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M13 17l5-5-5-5M6 17l5-5-5-5"/>
-                                            </svg>
-                                        </button>
-                                        <button id="moveRight" class="transfer-btn" title="Move selected to selected">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M9 18l6-6-6-6"/>
-                                            </svg>
-                                        </button>
-                                        <button id="moveLeft" class="transfer-btn" title="Move selected to available">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M15 18l-6-6 6-6"/>
-                                            </svg>
-                                        </button>
-                                        <button id="moveAllLeft" class="transfer-btn" title="Move all to available">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M11 17l-5-5 5-5M18 17l-5-5 5-5"/>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div id="availableUsersList" class="user-list">
-                                    <div class="loading-spinner">
-                                        <div class="spinner"></div>
-                                        <p>Loading users...</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="user-section">
-                                <h4>Selected Users</h4>
-                                <div class="search-container">
-                                    <input type="text" id="selectedUsersSearch" placeholder="Search..." class="search-input">
-                                </div>
-                                <div id="selectedUsersList" class="user-list">
-                                    <div class="empty-state">
-                                        <p>No users selected</p>
-                                        <small>Select users from the available list</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="modal-actions">
-                            <button id="createGroupBtn" class="btn btn-primary" disabled>Create</button>
-                            <button id="cancelGroupBtn" class="btn btn-secondary">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Notification Panel -->
-        <div id="notificationPanel" class="notification-panel">
-            <div class="notification-panel-header">
-                <h3>Notifications</h3>
-                <button id="notificationClose" class="notification-close-btn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 6L6 18M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="notification-panel-content">
-            </div>
-        </div>
-    </div>
+/* Login Modal */
+.login-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
 
-    <script src="app.js"></script>
-</body>
-</html>
+.login-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.logo-icon {
+    font-size: 32px;
+}
+
+.login-logo h2 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.login-subtitle {
+    color: #666;
+    font-size: 14px;
+}
+
+.dark-mode .login-subtitle {
+    color: #999;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.dark-mode .form-group input {
+    background: #3d3d3d;
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+.dark-mode .form-group input:focus {
+    border-color: #007bff;
+}
+
+/* Button Styles */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: #007bff;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #545b62;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 8px;
+    text-align: center;
+}
+
+/* Chat Container */
+.chat-container {
+    display: flex;
+    height: 100vh;
+    background: white;
+}
+
+.dark-mode .chat-container {
+    background: #2d2d2d;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 320px;
+    background: #f8f9fa;
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+}
+
+.dark-mode .sidebar {
+    background: #1e1e1e;
+    border-right-color: #444;
+}
+
+.sidebar-header {
+    padding: 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.dark-mode .sidebar-header {
+    border-bottom-color: #444;
+}
+
+.app-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.app-title h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.header-icons {
+    display: flex;
+    gap: 8px;
+}
+
+.icon-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.icon-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .icon-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Settings Dropdown */
+.settings-container {
+    position: relative;
+}
+
+.settings-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    min-width: 160px;
+    z-index: 100;
+    display: none;
+}
+
+.dark-mode .settings-dropdown {
+    background: #3d3d3d;
+    border-color: #555;
+}
+
+.dropdown-item {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background: #f5f5f5;
+}
+
+.dark-mode .dropdown-item:hover {
+    background: #4d4d4d;
+}
+
+.dropdown-item:first-child {
+    border-radius: 8px 8px 0 0;
+}
+
+.dropdown-item:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+.dropdown-icon {
+    font-size: 16px;
+}
+
+/* User Info */
+.user-info {
+    padding: 16px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dark-mode .user-info {
+    border-bottom-color: #444;
+}
+
+.chat-item-avatar {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #007bff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.chat-status-dot {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #28a745;
+    border: 2px solid white;
+}
+
+.dark-mode .chat-status-dot {
+    border-color: #2d2d2d;
+}
+
+.user-details {
+    flex: 1;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.user-contact {
+    font-size: 12px;
+    color: #666;
+}
+
+.dark-mode .user-contact {
+    color: #999;
+}
+
+.connection-status {
+    margin-top: 4px;
+    font-size: 11px;
+}
+
+.status-label {
+    color: #666;
+}
+
+.dark-mode .status-label {
+    color: #999;
+}
+
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ffc107;
+    animation: pulse 2s infinite;
+}
+
+.status-dot.connected {
+    background: #28a745;
+    animation: none;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.status-text {
+    font-size: 11px;
+}
+
+/* Search */
+.search-container {
+    padding: 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.dark-mode .search-container {
+    border-bottom-color: #444;
+}
+
+.search-input-container {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+.dark-mode .search-icon {
+    color: #999;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 12px 10px 36px;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    font-size: 14px;
+    background: white;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.dark-mode .search-input {
+    background: #3d3d3d;
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+.clear-search-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 12px;
+    display: none;
+}
+
+/* Filter Tabs */
+.filter-tabs {
+    display: flex;
+    padding: 0 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.dark-mode .filter-tabs {
+    border-bottom-color: #444;
+}
+
+.filter-tab {
+    flex: 1;
+    padding: 12px 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    transition: color 0.2s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.filter-tab.active {
+    color: #007bff;
+    border-bottom-color: #007bff;
+}
+
+.tab-text {
+    font-weight: 500;
+}
+
+.tab-count {
+    font-size: 10px;
+    color: #666;
+}
+
+.dark-mode .tab-count {
+    color: #999;
+}
+
+.filter-tab.active .tab-count {
+    color: #007bff;
+}
+
+/* Chat List */
+.chat-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Main Chat Area */
+.main-chat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: white;
+}
+
+.dark-mode .main-chat {
+    background: #2d2d2d;
+}
+
+.chat-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid #e0e0e0;
+    background: white;
+}
+
+.dark-mode .chat-header {
+    background: #2d2d2d;
+    border-bottom-color: #444;
+}
+
+.chat-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chat-avatar {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.chat-details h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.chat-status-text {
+    font-size: 12px;
+    color: #666;
+}
+
+.dark-mode .chat-status-text {
+    color: #999;
+}
+
+/* Messages Container */
+.messages-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+/* Welcome Screen */
+.welcome-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.welcome-screen {
+    text-align: center;
+    max-width: 400px;
+}
+
+.welcome-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+.welcome-screen h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.welcome-screen p {
+    color: #666;
+    margin-bottom: 24px;
+}
+
+.dark-mode .welcome-screen p {
+    color: #999;
+}
+
+.connection-info {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    font-size: 14px;
+}
+
+.connection-indicator,
+.chat-count {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.connection-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #28a745;
+}
+
+.chat-count-icon {
+    font-size: 16px;
+}
+
+/* Post Login Welcome */
+.post-login-welcome {
+    text-align: center;
+    max-width: 400px;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.welcome-animation {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.welcome-logo {
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+.welcome-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    border: 2px solid #007bff;
+    border-radius: 50%;
+    animation: welcomePulse 2s infinite;
+}
+
+@keyframes welcomePulse {
+    0% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
+}
+
+.post-login-welcome h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.post-login-welcome p {
+    color: #666;
+    margin-bottom: 32px;
+}
+
+.dark-mode .post-login-welcome p {
+    color: #999;
+}
+
+.welcome-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 32px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.stat-icon {
+    font-size: 24px;
+}
+
+.stat-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.stat-number {
+    font-size: 20px;
+    font-weight: 600;
+    color: #007bff;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #666;
+}
+
+.dark-mode .stat-label {
+    color: #999;
+}
+
+.welcome-continue-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.welcome-continue-btn:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+/* Message Input */
+.message-input-container {
+    padding: 16px 24px;
+    border-top: 1px solid #e0e0e0;
+    background: white;
+}
+
+.dark-mode .message-input-container {
+    background: #2d2d2d;
+    border-top-color: #444;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    background: #f8f9fa;
+    border-radius: 24px;
+    padding: 8px;
+}
+
+.dark-mode .input-wrapper {
+    background: #3d3d3d;
+}
+
+.attach-btn,
+.send-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.attach-btn {
+    background: transparent;
+    color: #666;
+}
+
+.attach-btn:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .attach-btn {
+    color: #999;
+}
+
+.dark-mode .attach-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.send-btn {
+    background: #007bff;
+    color: white;
+}
+
+.send-btn:hover:not(:disabled) {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+.send-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.messageInput {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 8px 12px;
+    font-size: 14px;
+    resize: none;
+    max-height: 120px;
+    min-height: 24px;
+    line-height: 1.4;
+}
+
+.messageInput:focus {
+    outline: none;
+}
+
+.dark-mode .messageInput {
+    color: #e0e0e0;
+}
+
+.messageInput::placeholder {
+    color: #999;
+}
+
+/* Toast Notifications */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1100;
+}
+
+.toast {
+    background: #333;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    max-width: 300px;
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast-success {
+    background: #28a745;
+}
+
+.toast-error {
+    background: #dc3545;
+}
+
+.notification-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 1100;
+    max-width: 300px;
+}
+
+.dark-mode .notification-toast {
+    background: #3d3d3d;
+    border-color: #555;
+}
+
+.notification-toast.show {
+    transform: translateX(0);
+}
+
+.notification-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.notification-icon {
+    font-size: 20px;
+}
+
+.notification-text {
+    flex: 1;
+}
+
+.notification-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.notification-message {
+    font-size: 12px;
+    color: #666;
+}
+
+.dark-mode .notification-message {
+    color: #999;
+}
+
+/* Notification Panel */
+.notification-panel {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 400px;
+    height: 100vh;
+    background: white;
+    border-left: 1px solid #e0e0e0;
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease;
+    z-index: 1000;
+}
+
+.dark-mode .notification-panel {
+    background: #2d2d2d;
+    border-left-color: #444;
+}
+
+.notification-panel.active {
+    right: 0;
+}
+
+.notification-panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dark-mode .notification-panel-header {
+    border-bottom-color: #444;
+}
+
+.notification-close-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.notification-close-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .notification-close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.notification-panel-content {
+    padding: 20px;
+}
+
+/* Sessions Modal */
+.sessions-modal {
+    max-width: 600px;
+    width: 90%;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.dark-mode .modal-header {
+    border-bottom-color: #444;
+}
+
+.modal-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal-close-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.modal-close-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .modal-close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.modal-body {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.sessions-content {
+    min-height: 200px;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    gap: 16px;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e0e0e0;
+    border-top: 3px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-spinner p {
+    color: #666;
+    font-size: 14px;
+}
+
+.dark-mode .loading-spinner p {
+    color: #999;
+}
+
+/* New Group Modal */
+.new-group-modal {
+    max-width: 800px;
+    width: 95%;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.group-form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.required {
+    color: #dc3545;
+    margin-left: 2px;
+}
+
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.dark-mode .form-group input[type="text"] {
+    background: #3d3d3d;
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+/* User Selection Container */
+.user-selection-container {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    min-height: 400px;
+    margin-bottom: 20px;
+}
+
+.user-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.dark-mode .user-section {
+    border-color: #555;
+}
+
+.user-section h4 {
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.dark-mode .user-section h4 {
+    background: #3d3d3d;
+    border-bottom-color: #555;
+}
+
+.user-section .search-container {
+    padding: 12px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dark-mode .user-section .search-container {
+    border-bottom-color: #555;
+}
+
+.user-section .search-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.dark-mode .user-section .search-input {
+    background: #4d4d4d;
+    border-color: #666;
+    color: #e0e0e0;
+}
+
+/* Transfer Controls */
+.transfer-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.transfer-btn {
+    width: 24px;
+    height: 24px;
+    border: 1px solid #e0e0e0;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.transfer-btn:hover {
+    background: #f8f9fa;
+    border-color: #007bff;
+}
+
+.dark-mode .transfer-btn {
+    background: #4d4d4d;
+    border-color: #666;
+    color: #e0e0e0;
+}
+
+.dark-mode .transfer-btn:hover {
+    background: #5d5d5d;
+    border-color: #007bff;
+}
+
+/* User List */
+.user-list {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 200px;
+    max-height: 300px;
+}
+
+.user-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    gap: 12px;
+}
+
+.user-item:hover {
+    background: #f8f9fa;
+}
+
+.user-item.selected {
+    background: #e3f2fd;
+}
+
+.user-item.dragging {
+    opacity: 0.5;
+}
+
+.dark-mode .user-item {
+    border-bottom-color: #444;
+}
+
+.dark-mode .user-item:hover {
+    background: #3d3d3d;
+}
+
+.dark-mode .user-item.selected {
+    background: #1e3a5f;
+}
+
+.user-list.drag-over {
+    background: #f0f8ff;
+    border-color: #007bff;
+}
+
+.dark-mode .user-list.drag-over {
+    background: #1a2332;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #007bff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.user-name {
+    font-weight: 500;
+    font-size: 13px;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-username {
+    font-size: 11px;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dark-mode .user-username {
+    color: #999;
+}
+
+.user-checkbox {
+    flex-shrink: 0;
+}
+
+.user-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    color: #666;
+}
+
+.dark-mode .empty-state {
+    color: #999;
+}
+
+.empty-state p {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.empty-state small {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* Modal Actions */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.dark-mode .modal-actions {
+    border-top-color: #444;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        position: absolute;
+        z-index: 100;
+        height: 100%;
+    }
+    
+    .main-chat {
+        display: none;
+    }
+    
+    .user-selection-container {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .user-section {
+        min-height: 200px;
+    }
+    
+    .transfer-controls {
+        flex-direction: row;
+        justify-content: center;
+        order: -1;
+        padding: 8px 0;
+    }
+    
+    .new-group-modal {
+        width: 98%;
+        max-height: 95vh;
+    }
+    
+    .modal-actions {
+        flex-direction: column-reverse;
+    }
+    
+    .modal-actions .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+        padding: 16px;
+    }
+    
+    .user-selection-container {
+        min-height: 300px;
+    }
+    
+    .user-section {
+        min-height: 120px;
+    }
+    
+    .user-list {
+        max-height: 150px;
+    }
+}
